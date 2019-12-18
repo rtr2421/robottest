@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveForward;
 
 /**
@@ -24,6 +25,9 @@ public class OI {
   Button aButton = new JoystickButton(xBoxControl, 1);
   public OI() {
     aButton.whenPressed(new DriveForward(500));
+
+    // Example about how to run a command from the dashboard rather than requiring a joystick
+    SmartDashboard.putData("Run DriveForward", new DriveForward(100));
   }
 
   //// CREATING BUTTONS
