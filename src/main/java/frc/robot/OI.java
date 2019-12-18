@@ -7,6 +7,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
 
 /**
@@ -42,4 +43,11 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
+  public static double getLeftSpeed() {
+    return xBoxControl.getY(Hand.kLeft);
+  }
+
+  public static double getRightSpeed() {
+    return xBoxControl.getY(Hand.kRight);
+  }
 }
