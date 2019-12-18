@@ -64,4 +64,11 @@ public class DriveTrain extends Subsystem {
     setDefaultCommand(new JoystickDrive());
   }
 
+  public int getLeftEncoder() {
+    return talonL1.getSensorCollection().getQuadraturePosition();
+  }
+
+  public int getRightEncoder() {
+    return talonR1.getSensorCollection().getQuadraturePosition();
+  }
 }

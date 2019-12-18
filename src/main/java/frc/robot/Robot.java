@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.DriveForward;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 
@@ -25,11 +25,11 @@ import frc.robot.subsystems.ExampleSubsystem;
  */
 public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
-  public static DriveTrain m_driveTrain = new DriveTrain();
+  public static DriveTrain driveTrain = new DriveTrain();
   public static OI m_oi;
 
-  Command m_autonomousCommand;
-  SendableChooser<Command> m_chooser = new SendableChooser<>();
+  Command autonomousCommand;
+  SendableChooser<Command> autoChooser = new SendableChooser<>();
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -38,9 +38,9 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-    m_chooser.setDefaultOption("Default Auto", new ExampleCommand());
+    autoChooser.setDefaultOption("Default Auto", new DriveForward(500));
     // chooser.addOption("My Auto", new MyAutoCommand());
-    SmartDashboard.putData("Auto mode", m_chooser);
+    SmartDashboard.putData("Auto mode", autoChooser);
   }
 
   /**
@@ -54,6 +54,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    SmartDashboard.putNumber("Left Encoder", driveTrain.getLeftEncoder());
+    SmartDashboard.putNumber("Right Encoder", driveTrain.getRightEncoder());
   }
 
   /**
@@ -63,6 +65,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
+   
   }
 
   @Override
@@ -71,31 +74,20 @@ public class Robot extends TimedRobot {
   }
 
   /**
-   * This autonomous (along with the chooser code above) shows how to select
-   * between different autonomous modes using the dashboard. The sendable chooser
-   * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
-   * remove all of the chooser code and uncomment the getString code to get the
-   * auto name from the text box below the Gyro
-   *
-   * <p>
-   * You can add additional auto modes by adding additional commands to the
-   * chooser code above (like the commented example) or additional comparisons to
-   * the switch structure below with additional strings & commands.
+   * This runs the autonomous command chosen above when autonomous mode starts
+   * 
+   * Since all the commands should have a base class of `Command`, we can 
+   * just assign it to a Command variable and call it, rather than worrying about
+   * what kind it is. This only works if we're calling methods available in Command,
+   * that is, no custom setup.
    */
   @Override
   public void autonomousInit() {
-    m_autonomousCommand = m_chooser.getSelected();
-
-    /*
-     * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-     * switch(autoSelected) { case "My Auto": autonomousCommand = new
-     * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
-     * ExampleCommand(); break; }
-     */
-
-    // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.start();
+    autonomousCommand = autoChooser.getSelected();
+    
+    // schedule the autonomous command
+    if (autonomousCommand != null) {
+      autonomousCommand.start();
     }
   }
 
@@ -113,8 +105,8 @@ public class Robot extends TimedRobot {
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
     // this line or comment it out.
-    if (m_autonomousCommand != null) {
-      m_autonomousCommand.cancel();
+    if (autonomousCommand != null) {
+      autonomousCommand.cancel();
     }
   }
 

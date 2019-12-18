@@ -9,6 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.DriveForward;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -16,6 +19,13 @@ import edu.wpi.first.wpilibj.XboxController;
  */
 public class OI {
   public static XboxController xBoxControl = new XboxController(0);
+
+  // In WPIlib 2020 the XboxController.Buttons enum becomes public
+  Button aButton = new JoystickButton(xBoxControl, 1);
+  public OI() {
+    aButton.whenPressed(new DriveForward(500));
+  }
+
   //// CREATING BUTTONS
   // One type of button is a joystick button which is any button on a
   //// joystick.
@@ -43,11 +53,11 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
-  public static double getLeftSpeed() {
+  public static double getLeftJoystickY() {
     return xBoxControl.getY(Hand.kLeft);
   }
 
-  public static double getRightSpeed() {
+  public static double getRightJoystickY() {
     return xBoxControl.getY(Hand.kRight);
   }
 }
