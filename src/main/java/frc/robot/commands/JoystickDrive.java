@@ -8,7 +8,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
-import frc.robot.OI;
 import frc.robot.Robot;
 
 public class JoystickDrive extends Command {
@@ -29,8 +28,8 @@ public class JoystickDrive extends Command {
     double rightSpeed = 0.0;
     double leftSpeed = 0.0;
 
-    leftSpeed = OI.getLeftJoystickY();
-    rightSpeed = OI.getRightJoystickY();
+    leftSpeed = Robot.oi.getLeftJoystickY();
+    rightSpeed = Robot.oi.getRightJoystickY();
     Robot.driveTrain.tankDrive(leftSpeed, rightSpeed);
   }
 

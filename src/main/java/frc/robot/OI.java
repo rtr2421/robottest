@@ -19,7 +19,7 @@ import frc.robot.commands.DriveForward;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-  public static XboxController xBoxControl = new XboxController(0);
+  static XboxController xBoxControl = new XboxController(0);
 
   // In WPIlib 2020 the XboxController.Buttons enum becomes public
   Button aButton = new JoystickButton(xBoxControl, 1);
@@ -57,11 +57,11 @@ public class OI {
   // Start the command when the button is released and let it run the command
   // until it is finished as determined by it's isFinished method.
   // button.whenReleased(new ExampleCommand());
-  public static double getLeftJoystickY() {
+  public double getLeftJoystickY() {
     return xBoxControl.getY(Hand.kLeft);
   }
 
-  public static double getRightJoystickY() {
+  public double getRightJoystickY() {
     return xBoxControl.getY(Hand.kRight);
   }
 }
