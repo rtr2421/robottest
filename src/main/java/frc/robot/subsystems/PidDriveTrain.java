@@ -20,7 +20,7 @@ import frc.robot.commands.JoystickDrive;
  * Drive train for the robot, currently 4 Talons driving CIM motors, 2 per side
  * in a tank drive configuration.
  */
-public class DriveTrain extends Subsystem {
+public class PidDriveTrain extends Subsystem {
 
   WPI_TalonSRX talonL1;
   WPI_TalonSRX talonL2;
@@ -32,15 +32,10 @@ public class DriveTrain extends Subsystem {
   DigitalInput frontSensor;
   DifferentialDrive diffDrive;
 
-  public DriveTrain() {
+  public PidDriveTrain() {
     talonL1 = new WPI_TalonSRX(RobotMap.LEFTMOTOR_1);
-    // talonL2 = new WPI_TalonSRX(RobotMap.LEFTMOTOR_2);
     talonR1 = new WPI_TalonSRX(RobotMap.RIGHTMOTOR_1);
-    // talonR2 = new WPI_TalonSRX(RobotMap.RIGHTMOTOR_2);
     frontSensor = new DigitalInput(RobotMap.FRONT_SENSOR);
-    // leftGroup = new SpeedControllerGroup(talonL1, talonL2);
-    // rightGroup = new SpeedControllerGroup(talonR1, talonR2);
-
     diffDrive = new DifferentialDrive(talonL1, talonR1);
   }
 

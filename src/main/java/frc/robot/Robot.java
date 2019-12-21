@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     oi = new OI();
-    autoChooser.setDefaultOption("Default Auto", new DriveForward(500));
+    autoChooser.setDefaultOption("Default Auto", new DriveForward(RobotMap.TALON_ENCODER_PER_REV * 20));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", autoChooser);
   }

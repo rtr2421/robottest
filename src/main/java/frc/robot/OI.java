@@ -19,7 +19,7 @@ import frc.robot.commands.DriveForward;
  * interface to the commands and command groups that allow control of the robot.
  */
 public class OI {
-  static XboxController xBoxControl = new XboxController(0);
+  XboxController xBoxControl = new XboxController(0);
 
   // In WPIlib 2020 the XboxController.Buttons enum becomes public
   Button aButton = new JoystickButton(xBoxControl, 1);
@@ -27,7 +27,7 @@ public class OI {
     aButton.whenPressed(new DriveForward(500));
 
     // Example about how to run a command from the dashboard rather than requiring a joystick
-    SmartDashboard.putData("Run DriveForward", new DriveForward(100));
+    SmartDashboard.putData("Run DriveForward", new DriveForward(4096 * 10));
   }
 
   //// CREATING BUTTONS
