@@ -52,22 +52,23 @@ public class DriveTrain extends Subsystem {
       leftSpeed = Math.max(leftSpeed, 0);
       rightSpeed = Math.max(rightSpeed, 0);
     }
-    SmartDashboard.putNumber("Left Speed", leftSpeed);
-    SmartDashboard.putNumber("Right Speed", rightSpeed);
+    SmartDashboard.putData("Drive", diffDrive);
 
     diffDrive.tankDrive(leftSpeed, rightSpeed);
   }
 
   @Override
   public void initDefaultCommand() {
-    setDefaultCommand(new JoystickDrive());
+    if (!RobotMap.USE_EXPERIMENTAL_PID_DRIVE) {
+      setDefaultCommand(new JoystickDrive());
+    }
   }
 
   public int getLeftEncoder() {
-    return talonL1.getSensorCollection().getQuadraturePosition();
+    return talonL1.getSelectedSensorPosition(0);
   }
 
   public int getRightEncoder() {
-    return talonR1.getSensorCollection().getQuadraturePosition();
+    return talonR1.getSelectedSensorPosition(0);
   }
 }

@@ -23,11 +23,14 @@ public class OI {
 
   // In WPIlib 2020 the XboxController.Buttons enum becomes public
   Button aButton = new JoystickButton(xBoxControl, 1);
+
   public OI() {
     aButton.whenPressed(new DriveForward(500));
 
-    // Example about how to run a command from the dashboard rather than requiring a joystick
-    SmartDashboard.putData("Run DriveForward", new DriveForward(4096 * 10));
+    // Example about how to run a command from the dashboard rather than requiring a
+    // joystick
+    SmartDashboard.putData("Run DriveForward", new DriveForward(RobotMap.TALON_ENCODER_PER_REV * 10));
+
   }
 
   //// CREATING BUTTONS
@@ -64,4 +67,5 @@ public class OI {
   public double getRightJoystickY() {
     return xBoxControl.getY(Hand.kRight);
   }
+
 }
