@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -15,6 +18,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveForward;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.PidDriveTrain;
+import frc.robot.util.DriveTrainSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -25,9 +30,9 @@ import frc.robot.subsystems.ExampleSubsystem;
  */
 public class Robot extends TimedRobot {
   public static ExampleSubsystem m_subsystem = new ExampleSubsystem();
-  public static DriveTrain driveTrain = new DriveTrain();
+  public static DriveTrainSubsystem driveTrain;
   public static OI oi;
-
+  NetworkTable table;
   Command autonomousCommand;
   SendableChooser<Command> autoChooser = new SendableChooser<>();
 
@@ -38,9 +43,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     oi = new OI();
+    if (RobotMap.USE_EXPERIMENTAL_PID_DRIVE) {
+      driveTrain = new PidDriveTrain();
+    } else {
+      driveTrain = new DriveTrain();
+    }
     autoChooser.setDefaultOption("Default Auto", new DriveForward(RobotMap.TALON_ENCODER_PER_REV * 20));
     // chooser.addOption("My Auto", new MyAutoCommand());
     SmartDashboard.putData("Auto mode", autoChooser);
+    NetworkTableInstance networkTable = NetworkTableInstance.getDefault();
+    table = networkTable.getTable("test");
   }
 
   /**
@@ -56,6 +68,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     SmartDashboard.putNumber("Left Encoder", driveTrain.getLeftEncoder());
     SmartDashboard.putNumber("Right Encoder", driveTrain.getRightEncoder());
+
+    // Test to get something from the Raspberry Pi vision co-processor
+    NetworkTableEntry frame = table.getEntry("frame");
+    SmartDashboard.putNumber("From pi", frame.getDouble(42));
   }
 
   /**
@@ -65,7 +81,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void disabledInit() {
-   
+
   }
 
   @Override
@@ -76,15 +92,15 @@ public class Robot extends TimedRobot {
   /**
    * This runs the autonomous command chosen above when autonomous mode starts
    * 
-   * Since all the commands should have a base class of `Command`, we can 
-   * just assign it to a Command variable and call it, rather than worrying about
-   * what kind it is. This only works if we're calling methods available in Command,
+   * Since all the commands should have a base class of `Command`, we can just
+   * assign it to a Command variable and call it, rather than worrying about what
+   * kind it is. This only works if we're calling methods available in Command,
    * that is, no custom setup.
    */
   @Override
   public void autonomousInit() {
     autonomousCommand = autoChooser.getSelected();
-    
+
     // schedule the autonomous command
     if (autonomousCommand != null) {
       autonomousCommand.start();

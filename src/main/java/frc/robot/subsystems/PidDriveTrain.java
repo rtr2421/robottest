@@ -10,17 +10,17 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.JoystickDrive;
 import frc.robot.util.DifferentialPidDrive;
+import frc.robot.util.DriveTrainSubsystem;
 
 /**
  * Drive train for the robot, currently 4 Talons driving CIM motors, 2 per side
  * in a tank drive configuration.
  */
-public class PidDriveTrain extends Subsystem {
+public class PidDriveTrain extends DriveTrainSubsystem {
 
   WPI_TalonSRX talonL1;
   WPI_TalonSRX talonL2;
@@ -55,9 +55,7 @@ public class PidDriveTrain extends Subsystem {
 
   @Override
   public void initDefaultCommand() {
-    if (RobotMap.USE_EXPERIMENTAL_PID_DRIVE) {
-      setDefaultCommand(new JoystickDrive());
-    }
+    setDefaultCommand(new JoystickDrive());
   }
 
   public int getLeftEncoder() {
