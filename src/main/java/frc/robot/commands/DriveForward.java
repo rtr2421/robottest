@@ -12,14 +12,14 @@ import frc.robot.Robot;
 
 // An autonomous command to drive forward for 3 seconds
 public class DriveForward extends Command {
-  int maxLeft, maxRight;
+  int maxLeft, maxRight, howFar;
 
   public DriveForward(int howFar) {
     requires(Robot.driveTrain);
-   
-    // What about over/underflow!?
-    maxLeft = Robot.driveTrain.getLeftEncoder() + howFar;
-    maxRight = Robot.driveTrain.getRightEncoder() + howFar;
+    maxLeft = 0;
+    maxRight = 0;
+    this.howFar = howFar;
+    
   }
 
   public DriveForward() {
@@ -28,6 +28,9 @@ public class DriveForward extends Command {
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    // What about over/underflow!?
+    maxLeft = Robot.driveTrain.getLeftEncoder() + howFar;
+    maxRight = Robot.driveTrain.getRightEncoder() + howFar;
     setTimeout(3); // Safety so we don't drive for more than 3 seconds
   }
 

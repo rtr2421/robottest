@@ -7,20 +7,22 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.RobotMap;
 import frc.robot.commands.JoystickDrive;
+import frc.robot.util.BaseDriveTrain;
+
 
 /**
  * Drive train for the robot, currently 4 Talons driving CIM motors, 2 per side
  * in a tank drive configuration.
  */
-public class DriveTrain extends Subsystem {
+public class DriveTrain extends BaseDriveTrain {
 
   WPI_TalonSRX talonL1;
   WPI_TalonSRX talonL2;
@@ -42,18 +44,21 @@ public class DriveTrain extends Subsystem {
     // rightGroup = new SpeedControllerGroup(talonR1, talonR2);
 
     diffDrive = new DifferentialDrive(talonL1, talonR1);
+
+    // Explicitly set the braking mode so people don't accidentally do it on the talon itself
+    talonL1.setNeutralMode(NeutralMode.Brake);
+    talonR1.setNeutralMode(NeutralMode.Brake);
   }
 
   public void tankDrive(double leftSpeed, double rightSpeed) {
     SmartDashboard.putBoolean(("Front Sensor"), frontSensor.get());
 
     // If the sensor indicates we will hit something, prevent forward motion
-    if (frontSensor.get()) {
+    /*if (frontSensor.get()) {
       leftSpeed = Math.max(leftSpeed, 0);
       rightSpeed = Math.max(rightSpeed, 0);
-    }
+    }*/
     SmartDashboard.putData("Drive", diffDrive);
-
     diffDrive.tankDrive(leftSpeed, rightSpeed);
   }
 

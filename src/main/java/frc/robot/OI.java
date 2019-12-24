@@ -25,7 +25,7 @@ public class OI {
   Button aButton = new JoystickButton(xBoxControl, 1);
 
   public OI() {
-    aButton.whenPressed(new DriveForward(500));
+    aButton.whenPressed(new DriveForward(RobotMap.TALON_ENCODER_PER_REV));
 
     // Example about how to run a command from the dashboard rather than requiring a
     // joystick

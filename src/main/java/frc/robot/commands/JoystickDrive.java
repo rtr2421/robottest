@@ -25,8 +25,8 @@ public class JoystickDrive extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double leftSpeed = Robot.oi.getLeftJoystickY();
-    double rightSpeed = Robot.oi.getRightJoystickY();
+    double leftSpeed = -Robot.oi.getLeftJoystickY();
+    double rightSpeed = -Robot.oi.getRightJoystickY();
     Robot.driveTrain.tankDrive(leftSpeed, rightSpeed);
   }
 
